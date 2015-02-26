@@ -48,6 +48,11 @@ var kernel32 = ffi.Library('kernel32', {
     'int32', 'pointer', 'pointer' // flags, optional LPCTSTR name, ref hModule
   ]], // etc... / kernel32 is your friend!
 });
+var gdi32 = ffi.Library('gdi32', {
+  'CreateSolidBrush': ['pointer', [
+    'int32' 
+  ]],   
+});
 
 var Msg = Struct({
   'hwnd': 'pointer',
@@ -97,15 +102,15 @@ comctl32.InitCommonControlsEx(icc.ref());
 
 // Window Class
 var wClass = new WndClassEx;
-wClass.cbSize = 48;//80; // x86 = 48
-wClass.style = 0;
+wClass.cbSize = 48; //80; // x86 = 48
+wClass.style = 3;
 wClass.lpfnWndProc = WndProc;
 wClass.cbClsExtra = 0;
 wClass.cbWndExtra = 0;
 wClass.hInstance = hInstance;
 wClass.hIcon = null;
 wClass.hCursor = null;
-wClass.hbrBackground = null;
+wClass.hbrBackground = gdi32.CreateSolidBrush(0xff8000);//null;
 wClass.lpszMenuName = null;
 wClass.lpszClassName = className;
 wClass.hIconSm = null;
